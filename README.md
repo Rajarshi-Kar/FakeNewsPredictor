@@ -1,70 +1,62 @@
-# Getting Started with Create React App
+Fake News Detection Project
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project is a machine learning-based web application that detects fake news from real news articles. The application leverages Natural Language Processing (NLP) techniques to classify news articles as "Fake" or "Real." It uses a pre-trained model for prediction and a simple React frontend for user interaction.
 
-## Available Scripts
+Table of Contents
+1. Project Overview
+2. Technologies Used
+3. Backend Implementation
+4. Frontend Implementation
+5. How to Set Up the Project Locally
+6. File Structure
+7. Contributing
+8. License
 
-In the project directory, you can run:
+Project Overview
 
-### `npm start`
+The Fake News Detection Project uses machine learning to determine whether a news article is real or fake. The model is trained using a dataset containing news articles, including their title, content, and a label indicating whether the news is real (0) or fake (1). The model employs TF-IDF (Term Frequency-Inverse Document Frequency) to convert text into numerical format and a machine learning classifier (e.g., Logistic Regression) to classify the news.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Key Features:
+- Machine Learning Model: The model is trained to predict whether the news article is fake or real.
+- User Interface: The frontend is built using React, where users can input news article titles and content to check if it's real or fake.
+- Backend: The backend is implemented with Flask, which loads the machine learning model and vectorizer for processing and prediction.
+- Prediction Feedback: The frontend displays real-time predictions based on user inputs.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Technologies Used
 
-### `npm test`
+Backend
+- Flask: A lightweight Python web framework used to build the API for serving predictions.
+- Scikit-learn: A Python library for machine learning, used for training the model and making predictions.
+- joblib: For saving and loading the trained machine learning model and vectorizer.
+- Pandas: Used to handle the dataset and data preprocessing.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Frontend
+- React: A JavaScript library for building user interfaces, used to create a dynamic and responsive frontend.
+- Axios: For making HTTP requests from the React frontend to the Flask backend to get predictions.
+- HTML/CSS: For basic structuring and styling of the frontend.
 
-### `npm run build`
+Additional Tools
+- TfidfVectorizer: A tool from scikit-learn for converting text data into numerical data by measuring word importance.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Backend Implementation
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+The backend is responsible for the machine learning model, prediction logic, and serving the predictions to the frontend. The core components are:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+1. Model Training: The model is trained using a labeled dataset of news articles. After training, the model is serialized and saved using joblib. This saved model is then loaded in the backend for making predictions.
 
-### `npm run eject`
+2. Prediction API: Flask serves as the backend, where it accepts POST requests with news article content and returns a prediction (fake or real). It uses the TfidfVectorizer to convert the input content into the same numerical format as used during training, then applies the model to predict the label.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+API Endpoint:
+- POST /predict: Accepts news article content and returns a prediction (real or fake).
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Example:
+```python
+@app.route('/predict', methods=['POST'])
+def predict():
+    data = request.json
+    news_content = data['content']
+    # Convert text to numerical features
+    X_new = vectorizer.transform([news_content])
+    # Get the prediction from the model
+    prediction = model.predict(X_new)
+    return jsonify({'prediction': prediction[0]})
