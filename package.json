@@ -1,5 +1,5 @@
 {
-  "name": "gfg-hackathon",
+  "name": "new_predicotr",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -13,7 +13,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "your-build-command",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -34,9 +34,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "devDependencies": {
-    "@types/react": "^19.0.7",
-    "ajv": "^7.2.4"
   }
 }
